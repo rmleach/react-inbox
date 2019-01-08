@@ -13,9 +13,7 @@ class App extends Component {
 	constructor(props) {
 		super(props) 
 		this.state={
-			messages: [
-				
-			]
+			messages: []
 		}
 	}
   
@@ -24,7 +22,7 @@ class App extends Component {
 			.then(res => res.json())
 			.then(messages => {
 				this.setState({messages: messages})
-				return messages
+				// return messages
 			})
     }
 
@@ -36,13 +34,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Toolbar></Toolbar>
-        <ComposeForm></ComposeForm>
+        <Toolbar/>
+        <ComposeForm/>
 				<MessageList 	
 					messages={this.state.messages}
-				>
-				</MessageList>
-        {/* <div>{this.state.messages ? this.fetchMessages() :<Loader type="Grid" color="red" height={80} width={80} /> }</div> */}
+				/>
       </div>
     );
   }
