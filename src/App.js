@@ -82,12 +82,18 @@ class App extends Component {
 				messages: starredMessages
 			})
 		}
+		
+		selectAll(){}
+		deleteSelected(){}
+		addMessages(){}
 
   
   render(){
     return (
       <div className="App">
-        <Toolbar/>
+        <Toolbar 
+				messages={this.state.messages}
+				/>
         <ComposeForm/>
 				<MessageList 	
 					messages={this.state.messages}

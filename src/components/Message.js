@@ -4,13 +4,13 @@ const Message = (props) => {
   const readStatus = props.message.read ? 'row message' : 'row message unread'
   const selectStatus = props.message.selected ? 'selected' : ''
   const starStatus = props.message.starred ? 'star fa fa-star' : 'star fa fa-star-o'
-  const labelDisplay = props.message.labels.map((label, id) => <Tag text={label} key={`message ${props.message.id} tag ${id}`}/>)
+  const labelDisplay = props.message.labels.map((label, id) => <Label text={label} key={`message ${props.message.id} tag ${id}`}/>)
   return(
     <div className={`${readStatus} ${selectStatus}`}>
       <div className="col-xs-1">
         <div className="row">
           <div className="col-xs-2">
-            <input type="checkbox" onClick={()=>props.messageSelect(props.message.id)}/>
+            <input checked={selectStatus} type="checkbox" onChange={()=>props.messageSelect(props.message.id)}/>
           </div>
           <div className="col-xs-2">
             <i className={`${starStatus}`} onClick={()=>props.messageStar(props.message.id)}></i>
@@ -27,7 +27,7 @@ const Message = (props) => {
     
   )
 }
-function Tag ({text}){
+function Label ({text}){
   return (
   <span class="label label-warning">{text}</span>
   )
