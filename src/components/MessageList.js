@@ -7,7 +7,11 @@ const MessageList = (props) => {
 		props.messages.map((message, idx) => 
 			<Message
 				key={idx}
+				labels={props.labelDisplay}
 				message={message}
+				messageRead={props.messageRead}
+				messageSelect={props.messageSelect}
+				messageStar={props.messageStar}
 			/>
 		)
 	)
