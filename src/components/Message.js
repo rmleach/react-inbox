@@ -4,7 +4,8 @@ const Message = (props) => {
   const readStatus = props.message.read ? 'row message' : 'row message unread'
   const selectStatus = props.message.selected ? 'selected' : ''
   const starStatus = props.message.starred ? 'star fa fa-star' : 'star fa fa-star-o'
-  const labelDisplay = props.message.labels.map((label, id) => <Label text={label} key={`message ${props.message.id} tag ${id}`}/>)
+  const labelDisplay = props.message.labels.map((label, id) => 
+    <Label text={label} key={`message ${props.message.id} tag ${id}`}/>)
   return(
     <div className={`${readStatus} ${selectStatus}`}>
       <div className="col-xs-1">
@@ -29,7 +30,7 @@ const Message = (props) => {
 }
 function Label ({text}){
   return (
-  <span class="label label-warning">{text}</span>
+  <span className="label label-warning">{text}</span>
   )
 }
 export default Message
