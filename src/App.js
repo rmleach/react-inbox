@@ -146,7 +146,6 @@ class App extends Component {
 		}
 
 		removeLabel = (e)=> {
-			console.log('hey bish')
 			const selectedMessages = this.state.messages.map(message => {
 				if(message.selected === true){
 					message.labels = message.labels.filter(label => label !== e.target.value)
@@ -160,13 +159,16 @@ class App extends Component {
 		}
 		
 		deleteSelected = () => {
-			const deletedMessages = this.state.messages.filter(message => message.selected)
-			const ids = deletedMessages.map(message => message.id)
-			const test = this.state.messages.filter(message => !message.selected)
-			this.setState({
-				messages: test
+			const savedMessages = this.state.messages.filter(message => !message.selected)
+			const ids = this.state.messages.map(message => {
+				if(message.selected === true){
+					this.updates(message.id, 'delete', 'delete', true)
+				}
+			return ids
 			})
-			this.updates(ids, 'delete', 'delete')
+			this.setState({
+				messages: savedMessages
+			})
 		}
 		// addMessages(){}
 		// composeMessage(){
