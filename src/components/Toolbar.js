@@ -26,12 +26,12 @@ const Toolbar = (props) => {
             <span className="badge badge">{unreadCount}</span>
             unread messages
           </p>
-      <a className="btn btn-danger">
-        <i className="fa fa-plus"></i>
+      <a className="btn btn-danger" onClick={props.composeMessage}>
+        <i className = "fa fa-plus"></i> 
       </a>
 
       <button className="btn btn-default" onClick={props.selectAll}>
-        <i className={false ? "fa fa-check-square-o" : "fa fa-minus-square-o"}></i>
+        <i className={true ? "fa fa-check-square-o" : "fa fa-minus-square-o"}></i>
       </button>
 
       <button className="btn btn-default" onClick={props.allRead}>

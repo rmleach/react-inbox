@@ -48,30 +48,16 @@ class App extends Component {
 	})
 	}	
 
-	messageRead= async (id) => {
-		let message= {
-			"messageIds": [id],
-			"command": "read",
-			"read": true
-	}
-	// const updateMessage = await fetch(apiUrl, {
-	// 	method: 'PATCH',
-	// 	body: JSON.stringify(message),
-	// 	headers: {
-	// 		'Content-Type': 'application/json',
-	// 		'Accept': 'application/json'
-	// 	}
-	// })
-
-		const updatedMessages= this.state.messages.map(message => {
-			if(message.id===id){
+	messageRead = (id) => {
+		const messageRead = this.state.messages.map(message => {
+			if(message.id === id){
 				message.read = !message.read
-			}
-			return message
+				this.updates(message.id, 'read', 'read', message.read)
+		}
+		return message
 		})
-		
 		this.setState({
-			messages: updatedMessages,
+			messages: messageRead
 		})
 	}
 
@@ -98,6 +84,7 @@ class App extends Component {
 			this.setState({
 				messages: starredMessages
 			})
+			this.updates(starred, 'star', 'star', true)
 		}
 		
 		selectAll = () => {
@@ -109,6 +96,11 @@ class App extends Component {
 			return message
 			})
 			this.setState({ messages: select })
+		}
+
+		selectAllButton = () => {
+			const allSelected = this.state.messages.filter(message => message.selected === true)
+
 		}
 
 		allRead = () => {
@@ -137,6 +129,7 @@ class App extends Component {
 				if(message.selected === true){
 						if(!message.labels.includes(e.target.value)){
 							message.labels = [...message.labels, e.target.value]
+							this.updates(message.id, 'addLabel', 'label', e.target.value)
 						}
 				}
 				return message
@@ -146,11 +139,19 @@ class App extends Component {
 			})
 		}
 
-		removeLabel = ()=> {
+		removeLabel = (e)=> {
 			console.log('hey bish')
+			const selectedMessages = this.state.messages.map(message => {
+				if(message.selected === true){
+					message.labels = message.labels.filter(label => label !== e.target.value)
+					this.updates(message.id, 'removeLabel', 'label', e.target.value)
+				}
+				return message
+			})
+			this.setState({
+				messages: selectedMessages
+			})
 		}
-		
-
 		
 		deleteSelected = () => {
 			const deletedMessages = this.state.messages.filter(message => message.selected)
@@ -162,7 +163,9 @@ class App extends Component {
 			this.updates(ids, 'delete', 'delete')
 		}
 		// addMessages(){}
-		// composeMessage(){}
+		// composeMessage(){
+		// 	console.log('butts')
+		// }
 
   
   render(){
@@ -177,7 +180,9 @@ class App extends Component {
 				addLabel={this.addLabel}
 				removeLabel={this.removeLabel}
 				/>
-        <ComposeForm/>
+        <ComposeForm
+					composeMessage={this.state.displayCompose}
+				/>
 				<MessageList 	
 					messages={this.state.messages}
 					messageLabel={this.labelDisplay}
