@@ -8,16 +8,16 @@ const Toolbar = (props) => {
   let selectionDisplay
   let buttonDisplay
 
-  if (messageCount=== selectedCount && messageCount !== 0) {
-    selectionDisplay = 'fa-check-square-o'
-    buttonDisplay = false
-  } else if (selectedCount > 0) {
-    selectionDisplay = 'fa-minus-square-o'
-    buttonDisplay = false
-  } else {
-    selectionDisplay = 'fa-square-o'
-    buttonDisplay = true
-  }
+  // if (messageCount=== selectedCount && messageCount !== 0) {
+  //   selectionDisplay = 'fa-check-square-o'
+  //   buttonDisplay = false
+  // } else if (selectedCount > 0) {
+  //   selectionDisplay = 'fa-minus-square-o'
+  //   buttonDisplay = false
+  // } else {
+  //   selectionDisplay = 'fa-square-o'
+  //   buttonDisplay = true
+  // }
 
     return (
       <div className="row toolbar">
@@ -31,7 +31,11 @@ const Toolbar = (props) => {
       </a>
 
       <button className="btn btn-default" onClick={props.selectAll}>
-        <i className={true ? "fa fa-check-square-o" : "fa fa-minus-square-o"}></i>
+        <i className={props.messages.every(message => 
+        message.selected ===true) 
+        ? "fa fa-check-square-o" : props.messages.every(message =>
+        message.selected === false) 
+        ? "fa fa-minus-square-o" : "fa fa-square-o"}></i>
       </button>
 
       <button className="btn btn-default" onClick={props.allRead}>

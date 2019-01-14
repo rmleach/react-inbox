@@ -99,8 +99,14 @@ class App extends Component {
 		}
 
 		selectAllButton = () => {
-			const allSelected = this.state.messages.filter(message => message.selected === true)
-
+			const allSelected = this.state.messages.every(message => message.selected === true)
+			const updateButton = this.state.message.map(message => {
+				allSelected ? message.selected = false : message.selected = true
+				return message
+			})
+			this.setState({
+				messages: updateButton
+			})
 		}
 
 		allRead = () => {
@@ -174,6 +180,7 @@ class App extends Component {
         <Toolbar 
 				messages={this.state.messages}
 				selectAll={this.selectAll}
+				selectAllButton={this.selectAllButton}
 				allRead={this.allRead}
 				allUnread={this.allUnread}
 				deleteSelected={this.deleteSelected}
