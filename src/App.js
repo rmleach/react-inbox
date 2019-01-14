@@ -34,7 +34,7 @@ class App extends Component {
 
 	updates = async (id, command, prop, value) => {
 	let message = {
-		messageIds: [id],
+		messageIds: id,
 		command: command,
 		[prop]: value
 	}
@@ -52,7 +52,7 @@ class App extends Component {
 		const messageRead = this.state.messages.map(message => {
 			if(message.id === id){
 				message.read = !message.read
-				this.updates(message.id, 'read', 'read', message.read)
+				this.updates([message.id], 'read', 'read', message.read)
 		}
 		return message
 		})
@@ -84,7 +84,7 @@ class App extends Component {
 			this.setState({
 				messages: starredMessages
 			})
-			this.updates(starred, 'star', 'star', true)
+			this.updates([starred], 'star', 'star', true)
 		}
 		
 		selectAll = () => {
@@ -115,19 +115,25 @@ class App extends Component {
 					message.read = true
 				} return message
 				})
-				this.setState({messages : selectedMessages})
+			const ids = this.state.messages.filter(message => message.selected === true).map(message => message.id)
+				this.setState({
+					messages : selectedMessages
+				})
+				this.updates(ids, 'read', 'read', true)
 		}
 
-		allUnread = () => {
+		allUnread = (id) => {
 			const selectedMessages = this.state.messages.map(message => {
 				if (message.selected === true) {
 					message.read = false
 				}
 				return message
 			})
+			const ids = this.state.messages.filter(message => message.selected === true).map(message => message.id)
 			this.setState({
 				messages: selectedMessages
 			})
+			this.updates(ids, 'read', 'read', false)
 			}
 		
 		addLabel = (e) => {
@@ -135,7 +141,7 @@ class App extends Component {
 				if(message.selected === true){
 						if(!message.labels.includes(e.target.value)){
 							message.labels = [...message.labels, e.target.value]
-							this.updates(message.id, 'addLabel', 'label', e.target.value)
+							this.updates([message.id], 'addLabel', 'label', e.target.value)
 						}
 				}
 				return message
@@ -149,7 +155,7 @@ class App extends Component {
 			const selectedMessages = this.state.messages.map(message => {
 				if(message.selected === true){
 					message.labels = message.labels.filter(label => label !== e.target.value)
-					this.updates(message.id, 'removeLabel', 'label', e.target.value)
+					this.updates([message.id], 'removeLabel', 'label', e.target.value)
 				}
 				return message
 			})
@@ -162,7 +168,7 @@ class App extends Component {
 			const savedMessages = this.state.messages.filter(message => !message.selected)
 			const ids = this.state.messages.map(message => {
 				if(message.selected === true){
-					this.updates(message.id, 'delete', 'delete', true)
+					this.updates([message.id], 'delete', 'delete', true)
 				}
 			return ids
 			})
