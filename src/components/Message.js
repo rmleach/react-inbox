@@ -24,6 +24,11 @@ const Message = (props) => {
           {props.message.subject}
         </a>
       </div>
+      <div className={props.message.open ? "row message-body" : "hidden"}>
+        <div className="col-xs-11 col-xs-offset-1">
+          {props.message.body}
+        </div>
+      </div>
     </div>
     
   )

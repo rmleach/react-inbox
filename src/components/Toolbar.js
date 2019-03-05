@@ -4,11 +4,11 @@ import React from 'react';
 const Toolbar = (props) => {
   const unreadCount = props.messages.filter(message => message.read === false).length
   const messageCount = props.messages.length
-  const selectedCount = props.messages.filter(message => message.read === true).length
+  const selectedCount = props.messages.filter(message => message.selected === true).length
   let selectionDisplay
   let buttonDisplay
 
-  if (messageCount=== selectedCount && messageCount !== 0) {
+  if (messageCount === selectedCount && messageCount !== 0) {
     selectionDisplay = 'fa fa-check-square-o'
     buttonDisplay = false
   } else if (selectedCount > 0) {
@@ -18,7 +18,6 @@ const Toolbar = (props) => {
     selectionDisplay = 'fa fa-square-o'
     buttonDisplay = true
   }
-
     return (
       <div className="row toolbar">
         <div className="col-md-12">
@@ -30,7 +29,7 @@ const Toolbar = (props) => {
         <i className = "fa fa-plus"></i> 
       </a>
 
-      <button className="btn btn-default" onClick={props.selectAll} disabled={buttonDisplay}>
+      <button className="btn btn-default" onClick={props.selectAll}>
         <i className={selectionDisplay}></i>
       </button>
       <button className="btn btn-default" onClick={props.allRead} disabled={buttonDisplay}>

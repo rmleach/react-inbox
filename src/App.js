@@ -15,6 +15,11 @@ class App extends Component {
     this.state={
       messages: [],
       displayCompose: false,
+      active: false,
+      newMessage: {
+        subject: "",
+        body: ""
+      }
     }
   }
   
@@ -48,10 +53,17 @@ class App extends Component {
   })
   }	
 
+  composeButton = () => {
+    this.setState({
+      active:!this.state.active
+    })
+  }
+
   messageRead = (id) => {
     const messageRead = this.state.messages.map(message => {
       if(message.id === id){
         message.read = !message.read
+        message.open = !message.open
         this.updates([message.id], 'read', 'read', message.read)
     }
     return message
@@ -68,7 +80,6 @@ class App extends Component {
       }
       return message
     })
-    
     this.setState({
       messages: selectedMessages,
     })
@@ -176,10 +187,51 @@ class App extends Component {
         messages: savedMessages
       })
     }
-    // addMessages(){}
-    // composeMessage(){
-    // 	console.log('butts')
-    // }
+
+    updateMessageSubject =(e) => {
+      this.setState({
+        newMessage: {
+          subject: e.target.value,
+          body: this.state.newMessage.body
+          }
+      })
+    }
+
+    updateMessageBody =(e) => {
+      this.setState({
+        newMessage: {
+          subject: this.state.newMessage.subject,
+          body: e.target.value
+          }
+      })
+    }
+
+    submitMessages = (e) => {
+      e.preventDefault()
+      let newMessage = this.state.newMessage
+      fetch(apiUrl, {
+        method: "POST",
+        body: JSON.stringify(newMessage),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        }
+      })
+        .then(res => res.json())
+        .then(message => {
+          this.setState({
+            messages: [...this.state.messages, message],
+            commposeMessage: !this.state.composeMessage
+          })
+          return message
+        })
+      }
+
+    composeMessage = () => {
+      this.setState({
+        active: !this.state.active
+      })
+    }
 
   
   render(){
@@ -187,6 +239,7 @@ class App extends Component {
       <div className="App">
         <Toolbar 
         messages={this.state.messages}
+        composeMessage={this.composeMessage}
         selectAll={this.selectAll}
         selectAllButton={this.selectAllButton}
         allRead={this.allRead}
@@ -195,9 +248,12 @@ class App extends Component {
         addLabel={this.addLabel}
         removeLabel={this.removeLabel}
         />
-        <ComposeForm
-          composeMessage={this.state.displayCompose}
-        />
+        {
+          this.state.active ? < ComposeForm 
+          updateMessageSubject = {this.updateMessageSubject}
+          updateMessageBody = {this.updateMessageBody}
+          submitMessages = {
+            this.submitMessages}/> : false}
         <MessageList 	
           messages={this.state.messages}
           messageLabel={this.labelDisplay}
